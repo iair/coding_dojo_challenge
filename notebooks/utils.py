@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
+import torch
+import numpy as np
+import random
 
 def plot_distributions(df, n_cols=3, figsize=(20, 15)):
     """
@@ -227,3 +230,17 @@ def identify_columns_by_unique_values(df, max_unique_values):
         if 2 < unique_value_count <= max_unique_values:
             filtered_columns.append(column)
     return filtered_columns
+def set_seed(seed_value=42):
+    """
+    Set seed for reproducibility in PyTorch, NumPy, and the random module.
+    Parameters:
+    - seed_value: The seed value to set for reproducibility.
+    """
+    random.seed(seed_value)
+    np.random.seed(seed_value)
+    torch.manual_seed(seed_value)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed(seed_value)
+        torch.cuda.manual_seed_all(seed_value)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
