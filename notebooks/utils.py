@@ -188,3 +188,42 @@ def plot_cluster_boxplot(df, cluster_column, feature_column):
     plt.xlabel('Cluster')
     plt.ylabel(feature_column)
     plt.show()
+def identify_numerical_columns(df):
+    """
+    Identify all numerical columns in the given DataFrame.
+    Parameters:
+    - df: The DataFrame from which to identify numerical columns.
+    Returns:
+    - A list of numerical column names.
+    """
+    numerical_columns = df.select_dtypes(include=['number']).columns.tolist()
+    return numerical_columns
+def identify_binary_columns(df):
+    """
+    Identify all binary columns in the given DataFrame.
+    Parameters:
+    - df: The DataFrame from which to identify binary columns.
+    Returns:
+    - A list of binary column names.
+    """
+    binary_columns = []
+    for column in df.columns:
+        if df[column].nunique() == 2:
+            binary_columns.append(column)
+    return binary_columns
+
+def identify_columns_by_unique_values(df, max_unique_values):
+    """
+    Identify all columns in the DataFrame that have more than 2 and fewer than X unique values.
+    Parameters:
+    - df: The DataFrame from which to identify columns.
+    - max_unique_values: The upper limit for the number of unique values in a column.
+    Returns:
+    - A list of column names that have more than 2 and fewer than X unique values.
+    """
+    filtered_columns = []
+    for column in df.columns:
+        unique_value_count = df[column].nunique()
+        if 2 < unique_value_count <= max_unique_values:
+            filtered_columns.append(column)
+    return filtered_columns
